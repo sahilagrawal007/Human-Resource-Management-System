@@ -7,7 +7,8 @@ const prisma = new PrismaClient();
 async function main() {
   const hashedPassword = await bcrypt.hash("admin123", 10);
 
-  await prisma.user.upsert({
+  // 1️⃣ Create or update admin user
+  const adminUser = await prisma.user.upsert({
     where: { email: "admin@dayflow.com" },
     update: {
       password: hashedPassword,
@@ -19,12 +20,27 @@ async function main() {
     },
   });
 
-  console.log("✅ Admin user seeded with hashed password");
+  // 2️⃣ Create or update employee linked to user
+  await prisma.employee.upsert({
+    where: { userId: adminUser.id },
+    update: {},
+    create: {
+      userId: adminUser.id,
+      employeeCode: "EMP-ADMIN-001",
+      fullName: "Admin User",
+      jobTitle: "Administrator",
+      department: "HR",
+      salary: 50000.0,
+      joinDate: new Date("2024-01-01"),
+    },
+  });
+  
+  console.log("✅ Admin user and employee seeded successfully");
 }
 
 main()
-  .catch((e) => {
-    console.error(e);
+  .catch((err) => {
+    console.error(err);
     process.exit(1);
   })
   .finally(async () => {
