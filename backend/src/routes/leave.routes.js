@@ -40,10 +40,62 @@ router.post("/apply", auth, async (req, res) => {
 router.get("/pending", auth, adminOnly, async (req, res) => {
   const leaves = await prisma.leave.findMany({
     where: { status: "PENDING" },
-    include: { employee: true },
+    include: { 
+      employee: {
+        include: {
+          user: {
+            select: { email: true }
+          }
+        }
+      }
+    },
+    orderBy: { createdAt: "desc" },
   });
 
   res.json(leaves);
+});
+
+// GET ALL LEAVES (ADMIN) - with filters
+router.get("/all", auth, adminOnly, async (req, res) => {
+  try {
+    const { status, type } = req.query;
+    const where = {};
+    
+    if (status && status !== "ALL") {
+      where.status = status;
+    }
+    
+    if (type && type !== "ALL") {
+      where.type = type;
+    }
+
+    const leaves = await prisma.leave.findMany({
+      where,
+      include: {
+        employee: {
+          include: {
+            user: {
+              select: { email: true }
+            }
+          }
+        }
+      },
+      orderBy: { createdAt: "desc" },
+    });
+
+    // Get counts
+    const pending = await prisma.leave.count({ where: { status: "PENDING" } });
+    const approved = await prisma.leave.count({ where: { status: "APPROVED" } });
+    const rejected = await prisma.leave.count({ where: { status: "REJECTED" } });
+
+    res.json({
+      leaves,
+      counts: { pending, approved, rejected, all: leaves.length },
+    });
+  } catch (error) {
+    console.error("Get all leaves error:", error);
+    res.status(500).json({ message: "Server error" });
+  }
 });
 
 // APPROVE / REJECT LEAVE (ADMIN)

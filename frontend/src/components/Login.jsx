@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { authAPI } from '../api/api';
 import './Login.css';
 
@@ -15,6 +15,24 @@ const Login = () => {
   const [rememberMe, setRememberMe] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [backendStatus, setBackendStatus] = useState('checking');
+
+  // Check backend connection on mount
+  useEffect(() => {
+    const checkBackend = async () => {
+      try {
+        const response = await fetch('http://localhost:3001/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: 'test', password: 'test' }),
+        });
+        setBackendStatus('connected');
+      } catch (err) {
+        setBackendStatus('disconnected');
+      }
+    };
+    checkBackend();
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -60,7 +78,18 @@ const Login = () => {
         window.location.href = '/employee/dashboard';
       }
     } catch (err) {
-      setError(err.response?.data?.message || (isSignUp ? 'Registration failed. Please try again.' : 'Invalid credentials. Please try again.'));
+      console.error('Auth error:', err);
+      
+      // Check if backend is not running
+      if (err.code === 'ERR_NETWORK' || err.message?.includes('Network Error')) {
+        setError('Cannot connect to server. Please make sure the backend is running on http://localhost:3001');
+      } else if (err.response?.data?.message) {
+        setError(err.response.data.message);
+      } else if (err.response?.status === 500) {
+        setError('Server error. Please try again later.');
+      } else {
+        setError(isSignUp ? 'Registration failed. Please check all fields and try again.' : 'Invalid credentials. Please try again.');
+      }
       setLoading(false);
     }
   };
@@ -142,6 +171,11 @@ const Login = () => {
 
           {/* Login/Signup Form */}
           <form onSubmit={handleSubmit} className="login-form">
+            {backendStatus === 'disconnected' && (
+              <div className="backend-warning">
+                ⚠️ Backend server is not running. Please start the backend server on port 3001.
+              </div>
+            )}
             {error && <div className="error-message">{error}</div>}
             
             {isSignUp && (

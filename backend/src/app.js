@@ -14,5 +14,6 @@ app.use("/auth", authRoutes);
 app.use("/attendance", attendanceRoutes);
 app.use("/leave", leaveRoutes);
 app.use("/employee", require("./routes/employee.routes"));
+app.use("/admin", require("./routes/admin.routes"));
 
 module.exports = app;

@@ -12,13 +12,28 @@ const api = axios.create({
 // Add token to requests if available
 api.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('token') || sessionStorage.getItem('token');
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
   },
   (error) => {
+    return Promise.reject(error);
+  }
+);
+
+// Handle response errors
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      // Clear tokens on unauthorized
+      localStorage.removeItem('token');
+      localStorage.removeItem('role');
+      sessionStorage.removeItem('token');
+      sessionStorage.removeItem('role');
+    }
     return Promise.reject(error);
   }
 );
@@ -90,6 +105,50 @@ export const leaveAPI = {
   },
   getBalance: async () => {
     const response = await api.get('/leave/balance');
+    return response.data;
+  },
+  getPending: async () => {
+    const response = await api.get('/leave/pending');
+    return response.data;
+  },
+  getAll: async (status = 'ALL', type = 'ALL') => {
+    const response = await api.get(`/leave/all?status=${status}&type=${type}`);
+    return response.data;
+  },
+  updateStatus: async (leaveId, status, adminNote) => {
+    const response = await api.patch(`/leave/${leaveId}/status`, { status, adminNote });
+    return response.data;
+  },
+};
+
+// Admin API
+export const adminAPI = {
+  getDashboardStats: async () => {
+    const response = await api.get('/admin/dashboard/stats');
+    return response.data;
+  },
+  getWeeklyAttendance: async () => {
+    const response = await api.get('/admin/dashboard/weekly-attendance');
+    return response.data;
+  },
+  getDepartments: async () => {
+    const response = await api.get('/admin/dashboard/departments');
+    return response.data;
+  },
+  getEmployees: async () => {
+    const response = await api.get('/admin/employees');
+    return response.data;
+  },
+  createEmployee: async (employeeData) => {
+    const response = await api.post('/admin/employees', employeeData);
+    return response.data;
+  },
+  getDailyAttendance: async (date) => {
+    const response = await api.get(`/admin/attendance/daily?date=${date}`);
+    return response.data;
+  },
+  getActivity: async (limit = 10) => {
+    const response = await api.get(`/admin/activity?limit=${limit}`);
     return response.data;
   },
 };
