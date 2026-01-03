@@ -63,6 +63,18 @@ export const employeeAPI = {
     const response = await api.get('/employee/profile');
     return response.data;
   },
+  updateProfile: async (profileData) => {
+    const response = await api.patch('/employee/profile', profileData);
+    return response.data;
+  },
+  getDashboardStats: async () => {
+    const response = await api.get('/employee/dashboard/stats');
+    return response.data;
+  },
+  getSummary: async () => {
+    const response = await api.get('/employee/summary');
+    return response.data;
+  },
 };
 
 // Attendance API
