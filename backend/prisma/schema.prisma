@@ -1,14 +1,154 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
+// ==============================
+// Prisma Client Generator
+// ==============================
 generator client {
-  provider = "prisma-client"
-  output   = "../generated/prisma"
+  provider = "prisma-client-js"
 }
 
+// ==============================
+// Datasource (URL via prisma.config.ts)
+// ==============================
 datasource db {
   provider = "postgresql"
+}
+
+// ==============================
+// ENUMS
+// ==============================
+enum UserRole {
+  ADMIN
+  EMPLOYEE
+}
+
+enum AttendanceStatus {
+  PRESENT
+  ABSENT
+  HALF_DAY
+  ON_LEAVE
+}
+
+enum LeaveType {
+  PAID
+  SICK
+  UNPAID
+}
+
+enum LeaveStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum PayrollStatus {
+  GENERATED
+  PAID
+}
+
+// ==============================
+// USER (Auth + Role)
+// ==============================
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  role      UserRole @default(EMPLOYEE)
+
+  employee  Employee?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([role])
+}
+
+// ==============================
+// EMPLOYEE PROFILE
+// ==============================
+model Employee {
+  id           String   @id @default(uuid())
+  userId       String   @unique
+  employeeCode String   @unique
+
+  fullName     String
+  phone        String?
+  address      String?
+  jobTitle     String
+  department   String
+  salary       Decimal  @db.Decimal(10, 2)
+  joinDate     DateTime
+
+  user         User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  attendance   Attendance[]
+  leaves       Leave[]
+  payrolls     Payroll[]
+
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([department])
+  @@index([jobTitle])
+}
+
+// ==============================
+// ATTENDANCE
+// ==============================
+model Attendance {
+  id          String           @id @default(uuid())
+  employeeId String
+  date        DateTime
+  checkIn     DateTime?
+  checkOut    DateTime?
+  status      AttendanceStatus @default(PRESENT)
+
+  employee    Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([employeeId, date])
+  @@index([date])
+}
+
+// ==============================
+// LEAVE MANAGEMENT
+// ==============================
+model Leave {
+  id          String      @id @default(uuid())
+  employeeId String
+  type        LeaveType
+  startDate   DateTime
+  endDate     DateTime
+  reason      String
+  status      LeaveStatus @default(PENDING)
+  adminNote   String?
+
+  employee    Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([status])
+  @@index([startDate, endDate])
+}
+
+// ==============================
+// PAYROLL (READ-ONLY FOR EMPLOYEE)
+// ==============================
+model Payroll {
+  id          String         @id @default(uuid())
+  employeeId String
+  month       Int
+  year        Int
+  basicPay    Decimal        @db.Decimal(10, 2)
+  deductions  Decimal        @db.Decimal(10, 2)
+  netPay      Decimal        @db.Decimal(10, 2)
+  status      PayrollStatus  @default(GENERATED)
+
+  employee    Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([employeeId, month, year])
+  @@index([year])
 }
