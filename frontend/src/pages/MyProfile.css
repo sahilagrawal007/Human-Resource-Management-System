@@ -159,40 +159,24 @@
   color: #1e293b;
 }
 
-.input-field {
-  position: relative;
-  display: flex;
-  align-items: center;
-}
-
-.input-icon {
-  position: absolute;
-  left: 1rem;
-  font-size: 1rem;
-  color: #64748b;
-  z-index: 1;
-  pointer-events: none;
-  width: 20px;
-  text-align: center;
-}
-
-.input-field input {
+.form-group input {
   width: 100%;
-  padding: 0.875rem 1rem 0.875rem 3rem;
+  padding: 0.875rem 1rem;
   border: 2px solid #e2e8f0;
   border-radius: 8px;
   font-size: 0.95rem;
   background: #f8fafc;
   color: #1e293b;
   transition: all 0.2s;
+  font-family: inherit;
 }
 
-.input-field input.readonly {
+.form-group input.readonly {
   background: #f8fafc;
   cursor: default;
 }
 
-.input-field input:not(.readonly):focus {
+.form-group input:not(.readonly):focus {
   outline: none;
   border-color: #14b8a6;
   background: white;

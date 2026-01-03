@@ -64,66 +64,54 @@ const ApplyLeave = () => {
 
           <div className="form-group">
             <label htmlFor="type">Leave Type *</label>
-            <div className="input-wrapper">
-              <span className="input-icon">📅</span>
-              <select
-                id="type"
-                value={formData.type}
-                onChange={(e) => setFormData({ ...formData, type: e.target.value })}
-                required
-              >
-                <option value="PAID">Paid Leave</option>
-                <option value="SICK">Sick Leave</option>
-                <option value="UNPAID">Unpaid Leave</option>
-              </select>
-            </div>
+            <select
+              id="type"
+              value={formData.type}
+              onChange={(e) => setFormData({ ...formData, type: e.target.value })}
+              required
+            >
+              <option value="PAID">Paid Leave</option>
+              <option value="SICK">Sick Leave</option>
+              <option value="UNPAID">Unpaid Leave</option>
+            </select>
           </div>
 
           <div className="form-row">
             <div className="form-group">
               <label htmlFor="startDate">Start Date *</label>
-              <div className="input-wrapper">
-                <span className="input-icon">📅</span>
-                <input
-                  type="date"
-                  id="startDate"
-                  value={formData.startDate}
-                  onChange={(e) => setFormData({ ...formData, startDate: e.target.value })}
-                  required
-                  min={new Date().toISOString().split('T')[0]}
-                />
-              </div>
+              <input
+                type="date"
+                id="startDate"
+                value={formData.startDate}
+                onChange={(e) => setFormData({ ...formData, startDate: e.target.value })}
+                required
+                min={new Date().toISOString().split('T')[0]}
+              />
             </div>
 
             <div className="form-group">
               <label htmlFor="endDate">End Date *</label>
-              <div className="input-wrapper">
-                <span className="input-icon">📅</span>
-                <input
-                  type="date"
-                  id="endDate"
-                  value={formData.endDate}
-                  onChange={(e) => setFormData({ ...formData, endDate: e.target.value })}
-                  required
-                  min={formData.startDate || new Date().toISOString().split('T')[0]}
-                />
-              </div>
+              <input
+                type="date"
+                id="endDate"
+                value={formData.endDate}
+                onChange={(e) => setFormData({ ...formData, endDate: e.target.value })}
+                required
+                min={formData.startDate || new Date().toISOString().split('T')[0]}
+              />
             </div>
           </div>
 
           <div className="form-group">
             <label htmlFor="reason">Reason *</label>
-            <div className="input-wrapper">
-              <span className="input-icon">📝</span>
-              <textarea
-                id="reason"
-                value={formData.reason}
-                onChange={(e) => setFormData({ ...formData, reason: e.target.value })}
-                placeholder="Please provide a reason for your leave request..."
-                rows="4"
-                required
-              />
-            </div>
+            <textarea
+              id="reason"
+              value={formData.reason}
+              onChange={(e) => setFormData({ ...formData, reason: e.target.value })}
+              placeholder="Please provide a reason for your leave request..."
+              rows="4"
+              required
+            />
           </div>
 
           <div className="form-actions">

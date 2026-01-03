@@ -85,51 +85,39 @@ const MyProfile = () => {
           <div className="form-grid">
             <div className="form-group">
               <label>First Name</label>
-              <div className="input-field">
-                <span className="input-icon">👤</span>
-                <input
-                  type="text"
-                  value={employee.fullName.split(' ')[0] || ''}
-                  readOnly={!isEditing}
-                  className={!isEditing ? 'readonly' : ''}
-                />
-              </div>
+              <input
+                type="text"
+                value={employee.fullName.split(' ')[0] || ''}
+                readOnly={!isEditing}
+                className={!isEditing ? 'readonly' : ''}
+              />
             </div>
             <div className="form-group">
               <label>Last Name</label>
-              <div className="input-field">
-                <span className="input-icon">👤</span>
-                <input
-                  type="text"
-                  value={employee.fullName.split(' ').slice(1).join(' ') || ''}
-                  readOnly={!isEditing}
-                  className={!isEditing ? 'readonly' : ''}
-                />
-              </div>
+              <input
+                type="text"
+                value={employee.fullName.split(' ').slice(1).join(' ') || ''}
+                readOnly={!isEditing}
+                className={!isEditing ? 'readonly' : ''}
+              />
             </div>
             <div className="form-group">
               <label>Email Address</label>
-              <div className="input-field">
-                <span className="input-icon">✉️</span>
-                <input
-                  type="email"
-                  value={employee.user?.email || ''}
-                  readOnly={!isEditing}
-                  className={!isEditing ? 'readonly' : ''}
-                />
-              </div>
+              <input
+                type="email"
+                value={employee.user?.email || ''}
+                readOnly={!isEditing}
+                className={!isEditing ? 'readonly' : ''}
+              />
             </div>
             <div className="form-group">
               <label>Phone Number</label>
-              <div className="input-field">
-                <span className="input-icon">📞</span>
-                <input
-                  type="tel"
-                  value={employee.phone || ''}
-                  readOnly={!isEditing}
-                  className={!isEditing ? 'readonly' : ''}
-                />
-              </div>
+              <input
+                type="tel"
+                value={employee.phone || ''}
+                readOnly={!isEditing}
+                className={!isEditing ? 'readonly' : ''}
+              />
             </div>
           </div>
 
@@ -137,27 +125,21 @@ const MyProfile = () => {
           <div className="form-grid">
             <div className="form-group">
               <label>Department</label>
-              <div className="input-field">
-                <span className="input-icon">🏢</span>
-                <input
-                  type="text"
-                  value={employee.department}
-                  readOnly={!isEditing}
-                  className={!isEditing ? 'readonly' : ''}
-                />
-              </div>
+              <input
+                type="text"
+                value={employee.department}
+                readOnly={!isEditing}
+                className={!isEditing ? 'readonly' : ''}
+              />
             </div>
             <div className="form-group">
               <label>Job Title</label>
-              <div className="input-field">
-                <span className="input-icon">💼</span>
-                <input
-                  type="text"
-                  value={employee.jobTitle}
-                  readOnly={!isEditing}
-                  className={!isEditing ? 'readonly' : ''}
-                />
-              </div>
+              <input
+                type="text"
+                value={employee.jobTitle}
+                readOnly={!isEditing}
+                className={!isEditing ? 'readonly' : ''}
+              />
             </div>
           </div>
         </div>

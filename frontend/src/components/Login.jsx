@@ -109,7 +109,7 @@ const Login = () => {
         <div className="login-left-content">
           <div className="logo">
             <div className="logo-icon">⚡</div>
-            <span className="logo-text">flow</span>
+            <span className="logo-text">Dayflow</span>
           </div>
           
           <h1 className="login-headline">
@@ -189,39 +189,32 @@ const Login = () => {
             {isSignUp && (
               <div className="form-group">
                 <label htmlFor="fullName">Full Name</label>
-                <div className="input-wrapper">
-                  <span className="input-icon">👤</span>
-                  <input
-                    type="text"
-                    id="fullName"
-                    placeholder="John Doe"
-                    value={fullName}
-                    onChange={(e) => setFullName(e.target.value)}
-                    required
-                  />
-                </div>
+                <input
+                  type="text"
+                  id="fullName"
+                  placeholder="John Doe"
+                  value={fullName}
+                  onChange={(e) => setFullName(e.target.value)}
+                  required
+                />
               </div>
             )}
 
             <div className="form-group">
               <label htmlFor="email">Email</label>
-              <div className="input-wrapper">
-                <span className="input-icon">✉</span>
-                <input
-                  type="email"
-                  id="email"
-                  placeholder="you@company.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                />
-              </div>
+              <input
+                type="email"
+                id="email"
+                placeholder="you@company.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
             </div>
 
             <div className="form-group">
               <label htmlFor="password">Password</label>
               <div className="input-wrapper">
-                <span className="input-icon">🔒</span>
                 <input
                   type={showPassword ? 'text' : 'password'}
                   id="password"
@@ -244,46 +237,37 @@ const Login = () => {
               <>
                 <div className="form-group">
                   <label htmlFor="phone">Phone Number (Optional)</label>
-                  <div className="input-wrapper">
-                    <span className="input-icon">📞</span>
-                    <input
-                      type="tel"
-                      id="phone"
-                      placeholder="+1 555-0100"
-                      value={phone}
-                      onChange={(e) => setPhone(e.target.value)}
-                    />
-                  </div>
+                  <input
+                    type="tel"
+                    id="phone"
+                    placeholder="+1 555-0100"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                  />
                 </div>
 
                 <div className="form-group">
                   <label htmlFor="jobTitle">Job Title</label>
-                  <div className="input-wrapper">
-                    <span className="input-icon">💼</span>
-                    <input
-                      type="text"
-                      id="jobTitle"
-                      placeholder="Software Developer"
-                      value={jobTitle}
-                      onChange={(e) => setJobTitle(e.target.value)}
-                      required
-                    />
-                  </div>
+                  <input
+                    type="text"
+                    id="jobTitle"
+                    placeholder="Software Developer"
+                    value={jobTitle}
+                    onChange={(e) => setJobTitle(e.target.value)}
+                    required
+                  />
                 </div>
 
                 <div className="form-group">
                   <label htmlFor="department">Department</label>
-                  <div className="input-wrapper">
-                    <span className="input-icon">🏢</span>
-                    <input
-                      type="text"
-                      id="department"
-                      placeholder="Engineering"
-                      value={department}
-                      onChange={(e) => setDepartment(e.target.value)}
-                      required
-                    />
-                  </div>
+                  <input
+                    type="text"
+                    id="department"
+                    placeholder="Engineering"
+                    value={department}
+                    onChange={(e) => setDepartment(e.target.value)}
+                    required
+                  />
                 </div>
               </>
             )}

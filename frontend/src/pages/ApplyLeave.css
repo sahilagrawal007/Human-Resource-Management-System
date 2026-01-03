@@ -64,26 +64,11 @@
   color: #1e293b;
 }
 
-.input-wrapper {
-  position: relative;
-  display: flex;
-  align-items: center;
-}
-
-.input-icon {
-  position: absolute;
-  left: 1rem;
-  font-size: 1.1rem;
-  color: #64748b;
-  z-index: 1;
-  pointer-events: none;
-}
-
-.input-wrapper input,
-.input-wrapper select,
-.input-wrapper textarea {
+.form-group input,
+.form-group select,
+.form-group textarea {
   width: 100%;
-  padding: 0.875rem 1rem 0.875rem 3rem;
+  padding: 0.875rem 1rem;
   border: 2px solid #e2e8f0;
   border-radius: 8px;
   font-size: 1rem;
@@ -93,16 +78,16 @@
   color: #1e293b;
 }
 
-.input-wrapper textarea {
+.form-group textarea {
   padding-top: 0.875rem;
   padding-bottom: 0.875rem;
   resize: vertical;
   min-height: 100px;
 }
 
-.input-wrapper input:focus,
-.input-wrapper select:focus,
-.input-wrapper textarea:focus {
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
   outline: none;
   border-color: #14b8a6;
   box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.1);
