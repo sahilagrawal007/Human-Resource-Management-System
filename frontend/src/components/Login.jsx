@@ -79,16 +79,24 @@ const Login = () => {
       }
     } catch (err) {
       console.error('Auth error:', err);
+      console.error('Error details:', {
+        code: err.code,
+        message: err.message,
+        response: err.response?.data,
+        status: err.response?.status
+      });
       
       // Check if backend is not running
-      if (err.code === 'ERR_NETWORK' || err.message?.includes('Network Error')) {
-        setError('Cannot connect to server. Please make sure the backend is running on http://localhost:3001');
+      if (err.code === 'ERR_NETWORK' || err.message?.includes('Network Error') || err.message?.includes('Failed to fetch')) {
+        setError('❌ Cannot connect to server. Please make sure the backend is running on http://localhost:3001. Check Terminal 1 for backend server.');
       } else if (err.response?.data?.message) {
-        setError(err.response.data.message);
+        setError(`❌ ${err.response.data.message}`);
       } else if (err.response?.status === 500) {
-        setError('Server error. Please try again later.');
+        setError('❌ Server error. Check backend terminal for details. Make sure database is connected.');
+      } else if (err.response?.status === 400) {
+        setError(`❌ ${err.response?.data?.message || 'Invalid request. Please check all fields.'}`);
       } else {
-        setError(isSignUp ? 'Registration failed. Please check all fields and try again.' : 'Invalid credentials. Please try again.');
+        setError(isSignUp ? '❌ Registration failed. Please check all fields and try again.' : '❌ Invalid credentials. Please try again.');
       }
       setLoading(false);
     }

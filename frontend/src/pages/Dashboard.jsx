@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { attendanceAPI, leaveAPI, employeeAPI } from '../api/api';
 import './Dashboard.css';
 
 const Dashboard = () => {
+  const navigate = useNavigate();
   const [stats, setStats] = useState({ daysWorked: 0, hoursThisWeek: 0, attendanceRate: 0 });
   const [todayAttendance, setTodayAttendance] = useState(null);
   const [leaveBalance, setLeaveBalance] = useState({ paid: { remaining: 12 }, sick: { remaining: 8 }, unpaid: { remaining: 5 } });
@@ -209,7 +211,12 @@ const Dashboard = () => {
         <div className="leave-requests-card">
           <div className="card-header">
             <h3>My Leave Requests</h3>
-            <button className="apply-btn">Apply for Leave</button>
+            <button 
+              className="apply-btn"
+              onClick={() => navigate('/employee/leave-apply')}
+            >
+              Apply for Leave
+            </button>
           </div>
           <div className="leave-requests-list">
             {leaves.length === 0 ? (

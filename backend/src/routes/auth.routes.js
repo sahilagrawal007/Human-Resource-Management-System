@@ -120,7 +120,20 @@ router.post("/register", async (req, res) => {
     });
   } catch (err) {
     console.error("REGISTER ERROR", err);
-    return res.status(500).json({ message: "Server error" });
+    
+    // More specific error messages
+    if (err.code === 'P2002') {
+      return res.status(400).json({ message: "Email already exists" });
+    }
+    
+    if (err.message?.includes('Unique constraint')) {
+      return res.status(400).json({ message: "User with this email already exists" });
+    }
+    
+    return res.status(500).json({ 
+      message: "Server error", 
+      error: process.env.NODE_ENV === 'development' ? err.message : undefined 
+    });
   }
 });
 

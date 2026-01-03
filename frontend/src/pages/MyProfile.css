@@ -124,6 +124,7 @@
   font-size: 1.1rem;
   width: 24px;
   text-align: center;
+  flex-shrink: 0;
 }
 
 .profile-details-card {
@@ -170,6 +171,9 @@
   font-size: 1rem;
   color: #64748b;
   z-index: 1;
+  pointer-events: none;
+  width: 20px;
+  text-align: center;
 }
 
 .input-field input {

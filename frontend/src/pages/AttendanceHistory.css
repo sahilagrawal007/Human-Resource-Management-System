@@ -90,6 +90,7 @@
   gap: 2rem;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   transition: all 0.2s;
+  flex-wrap: wrap;
 }
 
 .history-item:hover {
@@ -179,9 +180,20 @@
     gap: 1rem;
   }
 
+  .history-date-section {
+    min-width: auto;
+    width: 100%;
+  }
+
+  .history-details {
+    width: 100%;
+  }
+
   .history-status {
     align-items: flex-start;
     width: 100%;
+    flex-direction: row;
+    justify-content: space-between;
   }
 
   .legend {

@@ -299,6 +299,11 @@
 }
 
 @media (max-width: 640px) {
+  .attendance-header {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
   .attendance-times {
     grid-template-columns: 1fr;
   }
@@ -306,6 +311,18 @@
   .attendance-summary {
     flex-direction: column;
     gap: 0.75rem;
+  }
+
+  .attendance-actions {
+    flex-direction: column;
+  }
+
+  .calendar-grid {
+    gap: 0.25rem;
+  }
+
+  .calendar-day {
+    padding: 0.25rem;
   }
 }
 

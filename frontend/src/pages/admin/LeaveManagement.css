@@ -214,20 +214,26 @@
 .leave-card-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   margin-bottom: 0.75rem;
+  gap: 1rem;
+  flex-wrap: wrap;
 }
 
 .leave-user {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.75rem;
   font-weight: 600;
   color: #1e293b;
+  flex-wrap: wrap;
 }
 
 .user-icon-small {
-  font-size: 1rem;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+  width: 20px;
+  text-align: center;
 }
 
 .leave-type {
@@ -246,10 +252,17 @@
 
 .detail-item {
   display: flex;
-  align-items: center;
-  gap: 0.5rem;
+  align-items: flex-start;
+  gap: 0.75rem;
   font-size: 0.85rem;
   color: #64748b;
+  line-height: 1.5;
+}
+
+.detail-item span:first-child {
+  flex-shrink: 0;
+  font-size: 1rem;
+  margin-top: 0.125rem;
 }
 
 .leave-reason {
@@ -305,6 +318,31 @@
   .filters {
     flex-direction: column;
     align-items: flex-start;
+  }
+}
+
+@media (max-width: 640px) {
+  .leave-card-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .detail-item {
+    flex-wrap: wrap;
+  }
+
+  .summary-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .summary-icon {
+    align-self: flex-end;
+  }
+
+  .filter-tabs {
+    flex-wrap: wrap;
   }
 }
 

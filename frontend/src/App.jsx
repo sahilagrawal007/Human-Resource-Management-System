@@ -8,6 +8,7 @@ import MyProfile from './pages/MyProfile';
 import Attendance from './pages/Attendance';
 import AttendanceHistory from './pages/AttendanceHistory';
 import LeaveRequests from './pages/LeaveRequests';
+import ApplyLeave from './pages/ApplyLeave';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import Employees from './pages/admin/Employees';
 import AttendanceManagement from './pages/admin/AttendanceManagement';
@@ -67,6 +68,16 @@ function App() {
             <ProtectedRoute>
               <Layout>
                 <LeaveRequests />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/employee/leave-apply"
+          element={
+            <ProtectedRoute>
+              <Layout>
+                <ApplyLeave />
               </Layout>
             </ProtectedRoute>
           }

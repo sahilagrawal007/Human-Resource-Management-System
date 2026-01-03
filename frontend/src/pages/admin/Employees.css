@@ -175,6 +175,17 @@
   gap: 0.25rem;
   font-size: 0.875rem;
   color: #64748b;
+  line-height: 1.5;
+}
+
+.contact-info > div {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.contact-info > div > span:first-child {
+  flex-shrink: 0;
 }
 
 .action-btn {
@@ -340,7 +351,26 @@
   }
   
   .search-input {
-    width: 200px;
+    width: 100%;
+  }
+
+  .directory-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+
+  .employee-info {
+    flex-wrap: wrap;
+  }
+
+  .employees-table {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .employees-table table {
+    min-width: 600px;
   }
 }
 
