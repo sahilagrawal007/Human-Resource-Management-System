@@ -1,0 +1,311 @@
+.attendance-page {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.attendance-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  font-size: 1.2rem;
+  color: #64748b;
+}
+
+.attendance-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 2rem;
+}
+
+.attendance-header h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 0.5rem;
+}
+
+.attendance-header p {
+  font-size: 1rem;
+  color: #64748b;
+}
+
+.view-history-btn {
+  padding: 0.75rem 1.5rem;
+  background: #14b8a6;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: inline-block;
+}
+
+.view-history-btn:hover {
+  background: #0d9488;
+  transform: translateY(-1px);
+}
+
+.attendance-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.attendance-today-card {
+  background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
+  border-radius: 12px;
+  padding: 1.5rem;
+  color: white;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.card-header h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: white;
+  margin: 0;
+}
+
+.header-icon {
+  font-size: 1.2rem;
+}
+
+.attendance-date {
+  font-size: 0.9rem;
+  opacity: 0.9;
+  margin-bottom: 1.5rem;
+}
+
+.attendance-times {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.time-box {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  padding: 1rem;
+  text-align: center;
+}
+
+.time-label {
+  font-size: 0.8rem;
+  opacity: 0.8;
+  margin-bottom: 0.5rem;
+}
+
+.time-value {
+  font-size: 1.5rem;
+  font-weight: 600;
+  font-family: 'Courier New', monospace;
+}
+
+.attendance-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+.check-in-btn,
+.check-out-btn {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.check-in-btn {
+  background: white;
+  color: #14b8a6;
+}
+
+.check-in-btn:hover:not(:disabled) {
+  background: #f0fdfa;
+  transform: translateY(-1px);
+}
+
+.check-in-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.check-out-btn {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.check-out-btn:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.check-out-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.calendar-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.calendar-card .card-header h3 {
+  color: #1e293b;
+}
+
+.attendance-summary {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.summary-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: #64748b;
+}
+
+.summary-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.summary-item.present .summary-dot {
+  background: #d1fae5;
+}
+
+.summary-item.half-day .summary-dot {
+  background: #fed7aa;
+}
+
+.summary-item.absent .summary-dot {
+  background: #fee2e2;
+}
+
+.calendar {
+  width: 100%;
+}
+
+.calendar-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.weekday {
+  text-align: center;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #64748b;
+  padding: 0.5rem;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0.5rem;
+}
+
+.calendar-day {
+  aspect-ratio: 1;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  position: relative;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.calendar-day.empty {
+  border: none;
+  background: transparent;
+  cursor: default;
+}
+
+.calendar-day.weekend {
+  background: #f1f5f9;
+}
+
+.calendar-day.present {
+  background: #d1fae5;
+  border-color: #10b981;
+}
+
+.calendar-day.half-day {
+  background: #fed7aa;
+  border-color: #f59e0b;
+}
+
+.calendar-day.absent {
+  background: #fee2e2;
+  border-color: #ef4444;
+}
+
+.calendar-day.today {
+  border: 2px solid #14b8a6;
+  font-weight: 600;
+}
+
+.day-number {
+  font-size: 0.9rem;
+  color: #1e293b;
+  font-weight: 500;
+}
+
+.calendar-day.present .day-number {
+  color: #065f46;
+}
+
+.status-icon {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  font-size: 0.75rem;
+  color: #10b981;
+}
+
+@media (max-width: 1024px) {
+  .attendance-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .attendance-times {
+    grid-template-columns: 1fr;
+  }
+  
+  .attendance-summary {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+}
+

@@ -65,4 +65,75 @@ router.patch("/:id/status", auth, adminOnly, async (req, res) => {
   res.json({ message: "Leave updated", updated });
 });
 
+// GET MY LEAVES (EMPLOYEE)
+router.get("/my", auth, async (req, res) => {
+  const userId = req.user.userId;
+
+  const employee = await prisma.employee.findUnique({
+    where: { userId },
+  });
+
+  if (!employee) {
+    return res.status(404).json({ message: "Employee not found" });
+  }
+
+  const leaves = await prisma.leave.findMany({
+    where: { employeeId: employee.id },
+    orderBy: { createdAt: "desc" },
+  });
+
+  res.json(leaves);
+});
+
+// GET LEAVE BALANCE
+router.get("/balance", auth, async (req, res) => {
+  const userId = req.user.userId;
+
+  const employee = await prisma.employee.findUnique({
+    where: { userId },
+  });
+
+  if (!employee) {
+    return res.status(404).json({ message: "Employee not found" });
+  }
+
+  const currentYear = new Date().getFullYear();
+  const startOfYear = new Date(currentYear, 0, 1);
+  const endOfYear = new Date(currentYear, 11, 31);
+
+  // Count approved leaves by type
+  const paidLeaves = await prisma.leave.count({
+    where: {
+      employeeId: employee.id,
+      type: "PAID",
+      status: "APPROVED",
+      startDate: { gte: startOfYear, lte: endOfYear },
+    },
+  });
+
+  const sickLeaves = await prisma.leave.count({
+    where: {
+      employeeId: employee.id,
+      type: "SICK",
+      status: "APPROVED",
+      startDate: { gte: startOfYear, lte: endOfYear },
+    },
+  });
+
+  const unpaidLeaves = await prisma.leave.count({
+    where: {
+      employeeId: employee.id,
+      type: "UNPAID",
+      status: "APPROVED",
+      startDate: { gte: startOfYear, lte: endOfYear },
+    },
+  });
+
+  res.json({
+    paid: { used: paidLeaves, total: 15, remaining: 15 - paidLeaves },
+    sick: { used: sickLeaves, total: 10, remaining: 10 - sickLeaves },
+    unpaid: { used: unpaidLeaves, total: 5, remaining: 5 - unpaidLeaves },
+  });
+});
+
 module.exports = router;

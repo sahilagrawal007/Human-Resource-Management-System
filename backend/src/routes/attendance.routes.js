@@ -81,5 +81,150 @@ router.post("/check-out", auth, async (req, res) => {
   res.json({ message: "Checked out", updated });
 });
 
+// GET TODAY'S ATTENDANCE
+router.get("/today", auth, async (req, res) => {
+  const userId = req.user.userId;
+
+  const employee = await prisma.employee.findUnique({
+    where: { userId },
+  });
+
+  if (!employee) {
+    return res.status(404).json({ message: "Employee not found" });
+  }
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const record = await prisma.attendance.findUnique({
+    where: {
+      employeeId_date: {
+        employeeId: employee.id,
+        date: today,
+      },
+    },
+  });
+
+  res.json(record || null);
+});
+
+// GET ATTENDANCE HISTORY
+router.get("/history", auth, async (req, res) => {
+  const userId = req.user.userId;
+  const limit = parseInt(req.query.limit) || 30;
+
+  const employee = await prisma.employee.findUnique({
+    where: { userId },
+  });
+
+  if (!employee) {
+    return res.status(404).json({ message: "Employee not found" });
+  }
+
+  const records = await prisma.attendance.findMany({
+    where: { employeeId: employee.id },
+    orderBy: { date: "desc" },
+    take: limit,
+  });
+
+  res.json(records);
+});
+
+// GET ATTENDANCE CALENDAR
+router.get("/calendar", auth, async (req, res) => {
+  const userId = req.user.userId;
+  const month = parseInt(req.query.month) || new Date().getMonth() + 1;
+  const year = parseInt(req.query.year) || new Date().getFullYear();
+
+  const employee = await prisma.employee.findUnique({
+    where: { userId },
+  });
+
+  if (!employee) {
+    return res.status(404).json({ message: "Employee not found" });
+  }
+
+  const startDate = new Date(year, month - 1, 1);
+  const endDate = new Date(year, month, 0);
+
+  const records = await prisma.attendance.findMany({
+    where: {
+      employeeId: employee.id,
+      date: {
+        gte: startDate,
+        lte: endDate,
+      },
+    },
+  });
+
+  res.json(records);
+});
+
+// GET ATTENDANCE STATS
+router.get("/stats", auth, async (req, res) => {
+  const userId = req.user.userId;
+
+  const employee = await prisma.employee.findUnique({
+    where: { userId },
+  });
+
+  if (!employee) {
+    return res.status(404).json({ message: "Employee not found" });
+  }
+
+  const now = new Date();
+  const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+  const startOfWeek = new Date(now);
+  startOfWeek.setDate(now.getDate() - now.getDay());
+  startOfWeek.setHours(0, 0, 0, 0);
+  const endOfWeek = new Date(startOfWeek);
+  endOfWeek.setDate(startOfWeek.getDate() + 6);
+
+  // Days worked this month
+  const daysWorked = await prisma.attendance.count({
+    where: {
+      employeeId: employee.id,
+      date: { gte: startOfMonth },
+      status: "PRESENT",
+    },
+  });
+
+  // Hours this week
+  const weekRecords = await prisma.attendance.findMany({
+    where: {
+      employeeId: employee.id,
+      date: { gte: startOfWeek, lte: endOfWeek },
+      checkIn: { not: null },
+      checkOut: { not: null },
+    },
+  });
+
+  let hoursThisWeek = 0;
+  weekRecords.forEach((record) => {
+    if (record.checkIn && record.checkOut) {
+      const hours = (record.checkOut - record.checkIn) / (1000 * 60 * 60);
+      hoursThisWeek += hours;
+    }
+  });
+
+  // Attendance rate (last 30 days)
+  const thirtyDaysAgo = new Date(now);
+  thirtyDaysAgo.setDate(now.getDate() - 30);
+  const totalDays = 30;
+  const presentDays = await prisma.attendance.count({
+    where: {
+      employeeId: employee.id,
+      date: { gte: thirtyDaysAgo },
+      status: "PRESENT",
+    },
+  });
+  const attendanceRate = totalDays > 0 ? (presentDays / totalDays) * 100 : 0;
+
+  res.json({
+    daysWorked,
+    hoursThisWeek: Math.round(hoursThisWeek * 10) / 10,
+    attendanceRate: Math.round(attendanceRate),
+  });
+});
 
 module.exports = router;

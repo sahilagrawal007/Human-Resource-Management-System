@@ -13,5 +13,6 @@ app.use(express.json()); // REQUIRED
 app.use("/auth", authRoutes);
 app.use("/attendance", attendanceRoutes);
 app.use("/leave", leaveRoutes);
+app.use("/employee", require("./routes/employee.routes"));
 
 module.exports = app;
