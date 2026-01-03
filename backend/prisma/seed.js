@@ -1,20 +1,32 @@
 require("dotenv").config();
+const bcrypt = require("bcryptjs");
 const { PrismaClient } = require("@prisma/client");
 
 const prisma = new PrismaClient();
 
 async function main() {
-  await prisma.user.create({
-    data: {
+  const hashedPassword = await bcrypt.hash("admin123", 10);
+
+  await prisma.user.upsert({
+    where: { email: "admin@dayflow.com" },
+    update: {
+      password: hashedPassword,
+    },
+    create: {
       email: "admin@dayflow.com",
-      password: "admin123",
+      password: hashedPassword,
       role: "ADMIN",
     },
   });
 
-  console.log("✅ Database seeded successfully");
+  console.log("✅ Admin user seeded with hashed password");
 }
 
 main()
-  .catch(console.error)
-  .finally(() => prisma.$disconnect());
+  .catch((e) => {
+    console.error(e);
+    process.exit(1);
+  })
+  .finally(async () => {
+    await prisma.$disconnect();
+  });
